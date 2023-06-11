@@ -4,15 +4,15 @@ A simple [streamlit](https://streamlit.io/) app that converts [typst](https://ty
 
 ## Use the app
 
-Available here: [TODO]
+Web app available [here](https://albanie-typst2mathjax-main-dgpnp0.streamlit.app/).
 
-Run locally via:
+You can also run the app locally via:
 
 ```bash
 streamlit run main.py
 ```
 
-Outputs look something like this:
+Looks like this:
 
 ![example image](figs/example.png)
 
