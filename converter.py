@@ -81,11 +81,14 @@ def convert_math(raw_str):
         "arrow": "\\to",
         "lambda": "\\lambda",
         "mu": "\\mu",
+        "!=": "\\neq",
+        "subset.eq": "\\subseteq",
     }
 
     symbol_map = {
         "RR": "\\mathbb{R}",
         "CC": "\\mathbb{C}",
+        "nothing": "\\emptyset",
     }
 
     unary_operator_map = {
@@ -93,10 +96,12 @@ def convert_math(raw_str):
     }
 
     for typst_op, mathjax_op in operator_map.items():
-        processed_str = processed_str.replace(typst_op, mathjax_op)
+        if found_typst_op_match(processed_str, typst_op):
+            processed_str = processed_str.replace(typst_op, mathjax_op)
 
     for typst_symbol, mathjax_symbol in symbol_map.items():
-        processed_str = processed_str.replace(typst_symbol, mathjax_symbol)
+        if found_typst_op_match(processed_str, typst_symbol):
+            processed_str = processed_str.replace(typst_symbol, mathjax_symbol)
     
     for typst_op, mathjax_op in unary_operator_map.items():
         if found_typst_op_match(processed_str, typst_op):
