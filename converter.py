@@ -71,6 +71,34 @@ def found_typst_op_match(x, typst_op):
     return x.startswith(typst_op) or f" {typst_op}" in x
 
 
+def process_math_inline_text(x):
+    """Process typst text that appears in equations. This uses double quotes.
+    For example:
+      "Var"[X] in typst
+    maps to:
+      \mathrm{Var}[X] in LaTeX
+    """
+    regex_pattern = '(' + re.escape('"') + ')'
+    chunks = re.split(regex_pattern, x)
+    processed = ""
+    curr = ""
+    stack = []
+    for chunk in chunks:
+        if chunk == '"':
+            if stack:  # closing quote
+                stack.pop()
+                processed += f"\\mathrm{{{curr}}}"
+                curr = ""
+            else:
+                stack.append(chunk)
+                processed += curr
+                curr = ""
+        else:
+            curr += chunk
+    processed += curr
+    return processed
+
+
 def convert_math(raw_str):
     processed_str = raw_str
     # simple operators that do not require arguments
@@ -111,6 +139,9 @@ def convert_math(raw_str):
                 mathjax_op=mathjax_op,
             )
             # add argument
+
+    processed_str = process_math_inline_text(x=processed_str)
+
     return processed_str
 
 def typst2mathjax(text):

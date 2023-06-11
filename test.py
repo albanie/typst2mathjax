@@ -1,7 +1,17 @@
 import unittest
-from converter import typst2mathjax, process_unary_math_op, found_typst_op_match, convert_math
+
+from converter import (convert_math, found_typst_op_match,
+                       process_math_inline_text, process_unary_math_op,
+                       typst2mathjax)
+
 
 class Tests(unittest.TestCase):
+
+    def test_process_math_inline_text(self):
+        sample = '"Var"[X] + "Var"[Y]'
+        expected_output = "\\mathrm{Var}[X] + \\mathrm{Var}[Y]"
+        actual_output = process_math_inline_text(sample)
+        self.assertEqual(expected_output, actual_output)
 
     def test_convert_math_symbols(self):
         sample = "x in RR arrow CC"
